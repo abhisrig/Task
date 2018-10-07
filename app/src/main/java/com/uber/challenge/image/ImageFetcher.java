@@ -56,4 +56,8 @@ public class ImageFetcher {
             mRequestQueue.add(imageRequest);
         }
     }
+
+    public void cancel(String url) {
+
+    }
 }

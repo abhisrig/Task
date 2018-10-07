@@ -1,6 +1,7 @@
 package com.uber.challenge.image;
 
 import android.graphics.Bitmap;
+import android.support.annotation.UiThread;
 import android.widget.ImageView;
 
 import com.uber.challenge.R;
@@ -9,7 +10,8 @@ public class ImageLoader {
 
     private static volatile ImageFetcher imageFetcher;
 
-    public void initialize(int threadCount) {
+    @UiThread
+    public static void initialize(int threadCount) {
         imageFetcher = new ImageFetcher(threadCount);
     }
 
