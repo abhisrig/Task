@@ -26,6 +26,9 @@ public class CacheRequestThread extends Thread {
                         Cache.Entry entry = mCache.get(request.getUrl());
                         if (entry == null || entry.isExpired()) {
                             networkQueue.put(request);
+                        } else if (entry.refreshNeeded()) {
+                            networkQueue.put(request);
+                            request.deliverFromCache(entry.data);
                         } else {
                             request.deliverFromCache(entry.data);
                         }

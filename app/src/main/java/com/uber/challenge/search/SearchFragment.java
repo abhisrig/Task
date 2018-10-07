@@ -80,10 +80,20 @@ public class SearchFragment extends Fragment implements SearchContract.View, Sea
         mSwipeRefresh.setRefreshing(false);
         if (mSearchKeyword.equals(keyword)) {
             if (object instanceof ImageData && ((ImageData) object).photos != null) {
+                mList.clear();
                 mList.addAll(((ImageData) object).photos.photo);
             }
-        } else {
-            mList.clear();
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public <T> void showLoadMoreServerList(T object, String keyword) {
+        if (mProgressBar.getVisibility() == View.VISIBLE) {
+            mProgressBar.setVisibility(View.GONE);
+        }
+        mSwipeRefresh.setRefreshing(false);
+        if (mSearchKeyword.equals(keyword)) {
             if (object instanceof ImageData && ((ImageData) object).photos != null) {
                 mList.addAll(((ImageData) object).photos.photo);
             }

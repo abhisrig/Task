@@ -83,6 +83,7 @@ public enum NetworkDataProvider implements DataProvider {
         TaskQueue.queue(new Runnable() {
             @Override
             public void run() {
+                if (listener != null) listener.onStart();
                 final T data = getDataSync(query);
                 mResponseDelivery.post(new Runnable() {
                     @Override

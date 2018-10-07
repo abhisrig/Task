@@ -10,6 +10,8 @@ public interface SearchContract {
 
         <T> void showServerList(T Object, String keyword);
 
+        <T> void showLoadMoreServerList(T Object, String keyword);
+
         void showError();
 
         void showLoading();

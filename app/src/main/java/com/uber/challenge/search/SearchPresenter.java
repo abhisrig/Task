@@ -14,6 +14,7 @@ public class SearchPresenter implements SearchContract.Presenter {
     private Query mQuery;
     private SearchContract.View mView;
     private int pageNo;
+    private SearchRequest mSearchRequest;
 
     public SearchPresenter(SearchContract.View view) {
         view.setPresenter(this);
@@ -26,7 +27,7 @@ public class SearchPresenter implements SearchContract.Presenter {
         if (mView.isActive()) {
             mView.showLoading();
         }
-        fetchData(keyword);
+        fetchData(keyword, false);
     }
 
     @Override
@@ -35,10 +36,10 @@ public class SearchPresenter implements SearchContract.Presenter {
         if (mView.isActive()) {
             mView.showLoadMore();
         }
-        fetchData(keyword);
+        fetchData(keyword, true);
     }
 
-    private void fetchData(final String keyword) {
+    private void fetchData(final String keyword, final boolean isLoadMore) {
         if (!TextUtils.isEmpty(keyword)) {
             if (mQuery == null) {
                 Query.Builder builder = new Query.Builder();
@@ -59,22 +60,33 @@ public class SearchPresenter implements SearchContract.Presenter {
                 mQuery.getParamsMap().put("text", keyword);
             }
             NetworkDataProvider.INSTANCE.getDataAsync(mQuery, new DataProvider.ResponseListener<ImageData>() {
+                private String url;
+
+                @Override
+                public void onStart() {
+                    url = mQuery.build();
+                }
+
                 @Override
                 public void onResponse(ImageData object) {
-                    if (mView.isActive()) {
-                        mView.showServerList(object, keyword);
+                    if (url.equals(mQuery.build()) && mView.isActive()) {
+                        if (!isLoadMore)
+                            mView.showServerList(object, keyword);
+                        else
+                            mView.showLoadMoreServerList(object, keyword);
                     }
                 }
 
                 @Override
                 public void onError(Exception e) {
-                    if (mView.isActive()) {
+                    if (url.equals(mQuery.build()) && mView.isActive()) {
                         mView.showError();
                     }
                 }
             });
         } else {
-            mView.showEmpty();
+            if (mView.isActive())
+                mView.showEmpty();
         }
     }
 
