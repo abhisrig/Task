@@ -11,7 +11,7 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-        ImageLoader.initialize(3);
+        ImageLoader.initialize(this, 3);
     }
 
     public static AppController getInstance() {

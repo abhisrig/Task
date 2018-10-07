@@ -1,5 +1,6 @@
 package com.uber.challenge.image;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.UiThread;
 import android.widget.ImageView;
@@ -16,8 +17,8 @@ public class ImageLoader {
         threadCount : Number of concurrent network image request to be carried out
      */
     @UiThread
-    public static void initialize(int threadCount) {
-        imageFetcher = new ImageFetcher(threadCount);
+    public static void initialize(Context context, int threadCount) {
+        imageFetcher = new ImageFetcher(context, threadCount);
     }
 
     /*

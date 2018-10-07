@@ -1,8 +1,13 @@
 package com.uber.challenge.image;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Process;
 
+import com.uber.challenge.image.cache.Cache;
+import com.uber.challenge.image.cache.DiskBasedCache;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,17 +26,26 @@ public class ImageFetcher {
         void onError(Exception e);
     }
 
+    private static final String DEFAULT_CACHE_DIR_IMG = "com/uber/challenge/img";
+    private static final int DEFAULT_DISK_CACHE_SIZE = 5 * 1024 * 1024;
     private Map<String, ImageRequest> requestMap;
     private BlockingQueue<ImageRequest> mRequestQueue;
+    private BlockingQueue<ImageRequest> mCacheQueue;
     private List<ImageRequestThread> mRequestThread;
+    private Cache mCache;
 
     // access should be package default so that other callers may not have access to it
-    /*public*/ ImageFetcher(int numOfThreads) {
+    /*public*/ ImageFetcher(Context context, int numOfThreads) {
+        File cacheDir = new File(context.getCacheDir(), DEFAULT_CACHE_DIR_IMG);
+        mCache = new DiskBasedCache(cacheDir, DEFAULT_DISK_CACHE_SIZE);
         requestMap = new HashMap<>();
         mRequestQueue = new PriorityBlockingQueue<>();
+        mCacheQueue = new PriorityBlockingQueue<>();
         mRequestThread = new ArrayList<>(numOfThreads);
+        CacheRequestThread cacheRequestThread = new CacheRequestThread(mCache, mCacheQueue, mRequestQueue);
+        cacheRequestThread.start();
         for (int i = 0; i < numOfThreads; i++) {
-            ImageRequestThread imageRequestThread = new ImageRequestThread(mRequestQueue);
+            ImageRequestThread imageRequestThread = new ImageRequestThread(mRequestQueue, mCache);
             imageRequestThread.setPriority(Process.THREAD_PRIORITY_BACKGROUND);
             imageRequestThread.setName("IRT#" + i);
             imageRequestThread.start();
@@ -58,7 +72,7 @@ public class ImageFetcher {
                 }
             });
             requestMap.put(imageUrl, imageRequest);
-            mRequestQueue.add(imageRequest);
+            mCacheQueue.add(imageRequest);
         }
     }
 
