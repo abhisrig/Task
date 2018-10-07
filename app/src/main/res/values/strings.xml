@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Uber Challange</string>
+    <string name="app_name">UberChallenge</string>
+    <item name="image_tag" type="id" />
 </resources>
