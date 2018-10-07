@@ -10,6 +10,10 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
+/**
+ * Helper class used by ImageLoader, which is responsible for initializing the framework and request processing.
+ * All the image related works are delegated to this class by ImageLoader
+ */
 public class ImageFetcher {
     public interface ImageLoadCallback {
         void onImageLoaded(Bitmap bitmap);
@@ -21,7 +25,8 @@ public class ImageFetcher {
     private BlockingQueue<ImageRequest> mRequestQueue;
     private List<ImageRequestThread> mRequestThread;
 
-    public ImageFetcher(int numOfThreads) {
+    // access should be package default so that other callers may not have access to it
+    /*public*/ ImageFetcher(int numOfThreads) {
         requestMap = new HashMap<>();
         mRequestQueue = new PriorityBlockingQueue<>();
         mRequestThread = new ArrayList<>(numOfThreads);

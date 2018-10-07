@@ -10,11 +10,20 @@ public class ImageLoader {
 
     private static volatile ImageFetcher imageFetcher;
 
+
+    /*
+        method should be called to setup the image loading framework.
+        threadCount : Number of concurrent network image request to be carried out
+     */
     @UiThread
     public static void initialize(int threadCount) {
         imageFetcher = new ImageFetcher(threadCount);
     }
 
+    /*
+     * url : network url to fetch
+     * imageView : fetched url bitmap data to be attached to
+     * */
     public static ImageTarget<ImageView> with(final ImageView imageView, final String url) {
         if (imageFetcher == null) {
             throw new IllegalStateException("Make sure to initialize ImageLoader before using it");

@@ -2,6 +2,9 @@ package com.uber.challenge.image;
 
 import java.util.concurrent.BlockingQueue;
 
+/*
+ * Thread for performing network operation on image request queue
+ * */
 public class ImageRequestThread extends Thread {
     private BlockingQueue<ImageRequest> processingQueue;
 

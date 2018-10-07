@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Model class representing json data
+ */
 public class ImageData {
 
     @SerializedName("photos")

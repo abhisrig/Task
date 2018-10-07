@@ -3,11 +3,16 @@ package com.uber.challenge.image.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.util.AttributeSet;
 
 import com.uber.challenge.R;
 import com.uber.challenge.image.ImageLoader;
 
+/*
+ * Widget to display images from server
+ * Clients needs to call bind image with given url to bind images
+ * */
 public class ServerImage extends android.support.v7.widget.AppCompatImageView {
     private int mDefaultResId = -1;
     private int mErrorResId = -1;
@@ -33,6 +38,7 @@ public class ServerImage extends android.support.v7.widget.AppCompatImageView {
         attributes.recycle();
     }
 
+    @UiThread
     public void bindImage(final String url) {
         if (mDefaultResId != -1) {
             setImageResource(mDefaultResId);

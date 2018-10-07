@@ -1,5 +1,8 @@
 package com.uber.challenge.repository;
 
+/*
+ * Contract for different sources of data
+ * */
 public interface DataProvider {
 
     public interface ResponseListener<T> {

@@ -7,6 +7,11 @@ import com.uber.challenge.R;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
+/**
+ * container for imageview
+ * holds a weak reference to the view, so that it can be garbage collected
+ * @param <T>
+ */
 public class ImageTarget<T extends View> {
 
     private Reference<T> reference;

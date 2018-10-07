@@ -5,7 +5,8 @@ import android.os.Looper;
 import android.support.annotation.WorkerThread;
 
 import com.uber.challenge.TaskQueue;
-import com.uber.challenge.parser.GsonParser;
+import com.uber.challenge.parser.BaseParser;
+import com.uber.challenge.parser.ParserFactory;
 import com.uber.challenge.search.ImageData;
 
 import java.io.BufferedReader;
@@ -18,6 +19,9 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * Network data source, which provides data from network
+ */
 public enum NetworkDataProvider implements DataProvider {
     INSTANCE;
     private Handler mResponseDelivery = new Handler(Looper.getMainLooper());
@@ -49,7 +53,7 @@ public enum NetworkDataProvider implements DataProvider {
                 sb.append(read);
             }
             String output = sb.toString();
-            GsonParser gsonParser = new GsonParser();
+            BaseParser gsonParser = ParserFactory.getParser();
             ImageData imageData = gsonParser.fromJson(output, ImageData.class);
 
             reader.close();

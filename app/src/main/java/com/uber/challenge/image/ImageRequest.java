@@ -15,7 +15,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Responsible for executing network request and decoding bitmaps
+ */
 final class ImageRequest implements Comparable<ImageRequest> {
     private String mUrl;
     private int priority = 0;

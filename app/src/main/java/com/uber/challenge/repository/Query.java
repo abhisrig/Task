@@ -5,6 +5,9 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Map;
 
+/*
+    Helper class to represent different type of queries
+ * */
 public class Query {
 
     private static final String DEFAULT_PARAMS_ENCODING = "UTF-8";

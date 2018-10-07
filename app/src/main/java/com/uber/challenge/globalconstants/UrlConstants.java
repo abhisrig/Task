@@ -1,5 +1,8 @@
 package com.uber.challenge.globalconstants;
 
+/* *
+*  Constant class to store urls used in app
+* */
 public class UrlConstants {
     private UrlConstants() {
         throw new IllegalStateException("Can not be instantiated");
